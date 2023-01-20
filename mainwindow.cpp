@@ -92,5 +92,55 @@ void MainWindow::on_decodebtn_clicked()
    QString test2 = qUncompress(uncompressed_data);
   ui->decodetxt->setText( test2.toLatin1() );
 
+
+//    bool settingsexists=false;
+//    QFile Fout("settings.txt");    if(Fout.exists())    {       settingsexists=true;    }    Fout.close();
+//    if (settingsexists){
+//        QString searchString(":");
+//        QFile MyFile("settings.txt");
+//        MyFile.open(QIODevice::ReadWrite);
+//        QTextStream in (&MyFile);
+//        QString line;
+//        QStringList list;
+//        QStringList nums;
+//        do {
+//            line = in.readLine();
+//            searchString=":";
+//            if (line.contains(searchString)) { //, Qt::CaseSensitive
+//                QRegExp rx("[:]");// match a comma or a space
+//                list = line.split(rx);
+//                nums.append(list.at(1).toLatin1());
+//            }
+//        } while (!line.isNull());
+//        ui->lattxt->setText(nums.at(0).toLatin1());
+//        ui->longtxt->setText(nums.at(1).toLatin1());
+//        ui->tztxt->setText(nums.at(2).toLatin1());
+//        ui->serialtxt->setText(nums.at(3).toLatin1());//email/registercode
+//    }
+
+//    QString test =ui->serialtxt->text(); ui->serialtxt->text();
+// QByteArray uncompressed_data = QByteArray::fromHex(test.toUtf8()) ;
+//   QString test2 = qUncompress(uncompressed_data);
+// // ui->decodetxt->setText( test2.toLatin1() );
+
+
+//    //split line and verify serial to get email.
+//    QString line;
+//    QStringList list;
+//    QStringList nums;
+//    line =  test2.toLatin1();
+//        QString searchString("|");
+//    if (line.contains(searchString)) { //, Qt::CaseSensitive
+//        QRegExp rx("[|]");// match a comma or a space
+//        list = line.split(rx);
+//        qDebug() << list.at(0).toLatin1();
+//        if (list.at(0).toLatin1() == "testhre"){
+//        ui->lblregister->setText("Registered To: " + list.at(1).toLatin1());
+//        } else{
+//               ui->lblregister->setText("Registered To: unregistered");
+//        }
+//        }
+        
+        
 }
 
