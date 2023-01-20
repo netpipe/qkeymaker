@@ -72,6 +72,64 @@ QByteArray fileChecksum(const QString &fileName)
     return QByteArray();
 }
 
+QString MainWindow::encryptxor(QString test,QString key)
+{
+//code taken from silve_smuggler xor utility
+    // Read the file into a QByteArray
+    QByteArray clearBlob = test.toLatin1();
+    qDebug() << "File contains " << clearBlob.length() << " bytes.";
+
+    // Convert the key into a QByteArray
+    QByteArray keyBlob = key.toLatin1();
+
+    qDebug() << "Key is " << keyBlob.length() << " bytes.";
+
+    // XOR the file with the key
+    QByteArray cryptBlob;
+    // Give ourselves the memory before hand, so we don't call append() in the loop. It's slow.
+    cryptBlob.resize(clearBlob.size());
+    int blobPos;
+    for (blobPos = 0; blobPos < clearBlob.length(); blobPos++)
+    {
+        // XOR each byte of the clearblob with the key, wrapping the key position around
+        cryptBlob[blobPos] = clearBlob[blobPos] ^ keyBlob[blobPos % keyBlob.size()];
+        //qDebug() << blobPos << ": " << clearBlob[blobPos] << " XOR " << keyBlob[blobPos % keyBlob.size()] << " (@ " << blobPos % keyBlob.size() << ")";
+    }
+
+    // Base64Encode the resulting encrypted QByteArray
+    QString output = cryptBlob.toBase64(QByteArray::Base64Encoding | QByteArray::KeepTrailingEquals);
+
+return output;
+}
+
+QString MainWindow::decryptxor(QString string,QString key)
+{
+    // Read the input into a QByteArray (integral Base64Decode)
+    QByteArray cryptBlob;
+    cryptBlob = QByteArray::fromBase64(string.toUtf8(), QByteArray::Base64Encoding | QByteArray::KeepTrailingEquals);
+    qDebug() << "Input contains " << cryptBlob.length() << " bytes.";
+
+    // Convert the key into a QByteArray
+    QByteArray keyBlob = key.toLatin1();
+
+    // XOR the key with the decoded input
+    QByteArray clearBlob;
+    // Give ourselves the memory before hand, so we don't call append() in the loop. It's slow.
+    clearBlob.resize(cryptBlob.size());
+    int blobPos;
+    for (blobPos = 0; blobPos < cryptBlob.length(); blobPos++)
+    {
+        // XOR each byte of the clearblob with the key, wrapping the key position around
+        clearBlob[blobPos] = cryptBlob[blobPos] ^ keyBlob[blobPos % keyBlob.size()];
+        //qDebug() << blobPos << ": " << cryptBlob[blobPos] << " XOR " << keyBlob[blobPos % keyBlob.size()] << " (@ " << blobPos % keyBlob.size() << ")";
+    }
+
+    QTextCodec *codec = QTextCodec::codecForName("KOI8-R");
+
+    return codec->toUnicode(clearBlob);
+}
+
+
 
 void MainWindow::on_generatebtn_clicked()
 {
@@ -112,10 +170,7 @@ void MainWindow::on_decodebtn_clicked()
 //                nums.append(list.at(1).toLatin1());
 //            }
 //        } while (!line.isNull());
-//        ui->lattxt->setText(nums.at(0).toLatin1());
-//        ui->longtxt->setText(nums.at(1).toLatin1());
-//        ui->tztxt->setText(nums.at(2).toLatin1());
-//        ui->serialtxt->setText(nums.at(3).toLatin1());//email/registercode
+//        ui->serialtxt->setText(nums.at(0).toLatin1());//email/registercode
 //    }
 
 //    QString test =ui->serialtxt->text(); ui->serialtxt->text();
